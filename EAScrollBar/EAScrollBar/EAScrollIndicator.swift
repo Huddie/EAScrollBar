@@ -27,6 +27,8 @@ public class EAScrollIndicator : NSObject
     super.init()
     
     self.scrollView = scrollView
+    self.scrollView?.showsVerticalScrollIndicator = false
+    
     self.setUpBackground()
     self.scrollViewObserver()
     
@@ -37,7 +39,8 @@ public class EAScrollIndicator : NSObject
                                     change: [NSKeyValueChangeKey : Any]?,
                                     context: UnsafeMutableRawPointer?) {
     
-    if keyPath == "contentOffset" {
+
+    if keyPath == #keyPath(UIScrollView.contentOffset) {
       let _loc = (object as? UIScrollView)?.contentOffset
       indicatorBackground.updateLocation(yPos: (_loc?.y)!)
     }
@@ -61,8 +64,7 @@ extension EAScrollIndicator {
   
   fileprivate func scrollViewObserver(){
     // Set up observer
-    self.scrollView?.addObserver(self,forKeyPath: #keyPath(UIScrollView.contentOffset),
-                                 options: [.old, .new], context: nil)
+    self.scrollView?.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: [.old, .new], context: nil)
   }
 
 }
