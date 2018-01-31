@@ -10,11 +10,11 @@ import UIKit
 
 public class EAIndicatorBackground: UIView {
   
-  private var _width           : CGFloat   = 0.0                // Background width, will determine the indicator width
-  private var _height          : CGFloat   = 0.0                // Background height
-  private var _scrollView      : UIScrollView                   // scrollview (superview)
-  private var _indicator       : EAIndicator                    // Indicator  (subview)
-  private var _panGesture      = UIPanGestureRecognizer()       // Allow for scrolling
+  fileprivate var _width           : CGFloat   = 0.0                // Background width, will determine the indicator width
+  fileprivate var _height          : CGFloat   = 0.0                // Background height
+  fileprivate var _scrollView      : UIScrollView                   // scrollview (superview)
+  fileprivate var _indicator       : EAIndicator                    // Indicator  (subview)
+  fileprivate var _panGesture      = UIPanGestureRecognizer()       // Allow for scrolling
 
   var width: CGFloat
   {
@@ -84,9 +84,9 @@ extension EAIndicatorBackground {
   /** PRIVATE ***************************/
   
   /// Passes the updated location to the indicator
-  private func _updateLocation(yPos: CGFloat){ _indicator.updateLocation(yPos: yPos) }
+  fileprivate func _updateLocation(yPos: CGFloat){ _indicator.updateLocation(yPos: yPos) }
   
-  private func _placeBackgroundView()
+  fileprivate func _placeBackgroundView()
   {
     self.translatesAutoresizingMaskIntoConstraints = false
     

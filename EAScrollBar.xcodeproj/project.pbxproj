@@ -10,6 +10,9 @@
 		C06DE099202138FF004FDD55 /* EAScrollBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; };
 		C06DE09E202138FF004FDD55 /* EAScrollBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE09D202138FF004FDD55 /* EAScrollBarTests.swift */; };
 		C06DE0A0202138FF004FDD55 /* EAScrollBar.h in Headers */ = {isa = PBXBuildFile; fileRef = C06DE092202138FF004FDD55 /* EAScrollBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C06DE0AC20213FEE004FDD55 /* EAIndicatorBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0A920213FEE004FDD55 /* EAIndicatorBackground.swift */; };
+		C06DE0AD20213FEE004FDD55 /* EAIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0AA20213FEE004FDD55 /* EAIndicator.swift */; };
+		C06DE0AE20213FEE004FDD55 /* EAScrollIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0AB20213FEE004FDD55 /* EAScrollIndicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +32,9 @@
 		C06DE098202138FF004FDD55 /* EAScrollBarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EAScrollBarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C06DE09D202138FF004FDD55 /* EAScrollBarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAScrollBarTests.swift; sourceTree = "<group>"; };
 		C06DE09F202138FF004FDD55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C06DE0A920213FEE004FDD55 /* EAIndicatorBackground.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAIndicatorBackground.swift; sourceTree = "<group>"; };
+		C06DE0AA20213FEE004FDD55 /* EAIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAIndicator.swift; sourceTree = "<group>"; };
+		C06DE0AB20213FEE004FDD55 /* EAScrollIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAScrollIndicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				C06DE092202138FF004FDD55 /* EAScrollBar.h */,
+				C06DE0AF20213FF3004FDD55 /* EAScrollBar */,
 				C06DE093202138FF004FDD55 /* Info.plist */,
 			);
 			path = EAScrollBar;
@@ -84,6 +91,16 @@
 				C06DE09F202138FF004FDD55 /* Info.plist */,
 			);
 			path = EAScrollBarTests;
+			sourceTree = "<group>";
+		};
+		C06DE0AF20213FF3004FDD55 /* EAScrollBar */ = {
+			isa = PBXGroup;
+			children = (
+				C06DE0AA20213FEE004FDD55 /* EAIndicator.swift */,
+				C06DE0A920213FEE004FDD55 /* EAIndicatorBackground.swift */,
+				C06DE0AB20213FEE004FDD55 /* EAScrollIndicator.swift */,
+			);
+			path = EAScrollBar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -148,6 +165,7 @@
 				TargetAttributes = {
 					C06DE08E202138FF004FDD55 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					C06DE097202138FF004FDD55 = {
@@ -196,6 +214,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C06DE0AC20213FEE004FDD55 /* EAIndicatorBackground.swift in Sources */,
+				C06DE0AE20213FEE004FDD55 /* EAScrollIndicator.swift in Sources */,
+				C06DE0AD20213FEE004FDD55 /* EAIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +355,7 @@
 		C06DE0A4202138FF004FDD55 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -343,10 +365,12 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = EAScrollBar/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ehudadler.EAScrollBar;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -355,6 +379,7 @@
 		C06DE0A5202138FF004FDD55 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -364,6 +389,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = EAScrollBar/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ehudadler.EAScrollBar;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -376,6 +402,7 @@
 		C06DE0A7202138FF004FDD55 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8T736HH745;
 				INFOPLIST_FILE = EAScrollBarTests/Info.plist;
@@ -390,6 +417,7 @@
 		C06DE0A8202138FF004FDD55 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8T736HH745;
 				INFOPLIST_FILE = EAScrollBarTests/Info.plist;

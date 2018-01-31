@@ -12,10 +12,10 @@ public class EAScrollIndicator : NSObject
 {
   
   /**** Private *********************************/
-  private var indicatorBackground = EAIndicatorBackground()  // Hosting EAIndicatorBackground
+  fileprivate var indicatorBackground = EAIndicatorBackground()  // Hosting EAIndicatorBackground
   
   /**** Public private(set) *********************************/
-  public private(set) weak var scrollView: UIScrollView?
+  public fileprivate(set) weak var scrollView: UIScrollView?
   
   public override init() { super.init() }
   
@@ -48,7 +48,7 @@ extension EAScrollIndicator {
 
   /** PRIVATE ****************************/
   
-  private func setUpBackground(){
+  fileprivate func setUpBackground(){
     
     // Set up EAIndicatorBackground
     indicatorBackground = EAIndicatorBackground(width: 10, scrollView: self.scrollView!,
@@ -59,7 +59,7 @@ extension EAScrollIndicator {
     indicatorBackground.placeBackgroundView()
   }
   
-  private func scrollViewObserver(){
+  fileprivate func scrollViewObserver(){
     // Set up observer
     self.scrollView?.addObserver(self,forKeyPath: #keyPath(UIScrollView.contentOffset),
                                  options: [.old, .new], context: nil)

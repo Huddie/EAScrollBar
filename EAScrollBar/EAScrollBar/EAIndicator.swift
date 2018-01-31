@@ -13,16 +13,16 @@ public class EAIndicator: UIView
 
   /**** Private *********************************/
   
-  private let _heightMultiplier : CGFloat = 0.05            // Value used to resize indicator height appropiratly                  [Constant]
-  private var _topBottomPadding : CGFloat = 20.0            // Value used to determine top and bottom paddding                     [Get, Set]
-  private var _minimumHeight    : CGFloat = 13.0            // Value used to determine minimum height of indicator when compressed [Get, Set]
+  fileprivate let _heightMultiplier : CGFloat = 0.05            // Value used to resize indicator height appropiratly                  [Constant]
+  fileprivate var _topBottomPadding : CGFloat = 20.0            // Value used to determine top and bottom paddding                     [Get, Set]
+  fileprivate var _minimumHeight    : CGFloat = 13.0            // Value used to determine minimum height of indicator when compressed [Get, Set]
 
-  private var _indicatorWidth   : CGFloat  = 0.0            // The width of the indicator, matches width of EAIndicatorBackground  [Get]
-  private var _indicatorHeight  : CGFloat  = 0.0            // The height of the indicator, matches height of EAIndicatorBackground
+  fileprivate var _indicatorWidth   : CGFloat  = 0.0            // The width of the indicator, matches width of EAIndicatorBackground  [Get]
+  fileprivate var _indicatorHeight  : CGFloat  = 0.0            // The height of the indicator, matches height of EAIndicatorBackground
   
-  private var _backgroundView   : EAIndicatorBackground?    // The EAIndicatorBackground which will host the indicator
-  private var _heightConstraint : NSLayoutConstraint?       // Height Constraints of indicator which will allow for resizing
-  private var _topConstraint    : NSLayoutConstraint?       // Top Constraints of indicator which will allow for proper alighment when resized
+  fileprivate var _backgroundView   : EAIndicatorBackground?    // The EAIndicatorBackground which will host the indicator
+  fileprivate var _heightConstraint : NSLayoutConstraint?       // Height Constraints of indicator which will allow for resizing
+  fileprivate var _topConstraint    : NSLayoutConstraint?       // Top Constraints of indicator which will allow for proper alighment when resized
 
   
   /// Easily set, get the indicator width
@@ -62,7 +62,7 @@ public class EAIndicator: UIView
   /// This function should only be called once, unless reset is requried
   ///
   /// Uses constraints
-  private func _placeIndicator()
+  fileprivate func _placeIndicator()
   {
     
     if let backgroundView = self.superview as? EAIndicatorBackground {  // Check for safe unwrap
@@ -87,7 +87,7 @@ public class EAIndicator: UIView
   }
   
   /// This function will update the location of the indicator within the host view
-  private func _updateLocation(yPos: CGFloat){
+  fileprivate func _updateLocation(yPos: CGFloat){
 
     var newHeight: CGFloat = 0.0                                                                      // Blank height
     
