@@ -84,6 +84,7 @@ public class EAIndicator: UIView
       /* End constraints */
       
     }
+    updateLocation(yPos: 0)
   }
   
   /// This function will update the location of the indicator within the host view
@@ -91,9 +92,7 @@ public class EAIndicator: UIView
     
     var newHeight: CGFloat = 0.0                                                                      // Blank height
     
-    var convertedY = yPos * (_backgroundView?.height)! / (_backgroundView?.scrollViewContentHeight)!  // Converted Y to match the view rather then the contentSize
-    
-    
+    var convertedY = yPos * (_backgroundView?.height)! / (_backgroundView?.scrollViewContentHeight)!
     convertedY = convertedY >= 0 ? convertedY : 0                                                     // Allow Y to be positive values only
     
     if convertedY <= _topBottomPadding                                                                // Check if we have passed the top padding and need to begin compression
@@ -104,19 +103,20 @@ public class EAIndicator: UIView
       _heightConstraint?.constant = newHeight
       _topConstraint?.constant = _topBottomPadding
     }
-    else if convertedY >= (_backgroundView?.frame.height)! - _topBottomPadding                              // Check if we have passed bottom padding and need to begin compression
+    else if convertedY >= (_backgroundView?.height)! - _topBottomPadding - _indicatorHeight                             // Check if we have passed bottom padding and need to begin compression
     {
-      let difference = convertedY + _indicatorHeight - (_backgroundView?.frame.height)! - _topBottomPadding // Some pos. number
-      newHeight                   = _indicatorHeight - difference > _minimumHeight ?
-        _indicatorHeight - difference : _minimumHeight
-      
+
+      let difference = convertedY - ((_backgroundView?.height)! - _topBottomPadding - _indicatorHeight)                   // Some pos. number
+      newHeight                   = _indicatorHeight - abs(difference) > _minimumHeight ?
+                                    _indicatorHeight - abs(difference) : _minimumHeight
+
       _heightConstraint?.constant = newHeight
       _topConstraint?.constant    = (_backgroundView?.frame.height)! - _topBottomPadding - (_heightConstraint?.constant)! // Reposition top
     }
     else                                                                                                                  // Normal update, resize indicator height to identi
     {
       _heightConstraint?.constant = _indicatorHeight
-      _topConstraint?.constant =  convertedY * (_backgroundView?.height)! / (_backgroundView?.scrollViewContentHeight)!
+      _topConstraint?.constant =  yPos * (_backgroundView?.height)! / (_backgroundView?.scrollViewContentHeight)!
     }
     self.updateConstraints()
   }

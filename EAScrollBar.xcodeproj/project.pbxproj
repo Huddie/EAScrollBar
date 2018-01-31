@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C06AF2912021F33800A4FBEA /* NumbersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06AF2902021F33800A4FBEA /* NumbersViewController.swift */; };
 		C06DE099202138FF004FDD55 /* EAScrollBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; };
 		C06DE09E202138FF004FDD55 /* EAScrollBarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE09D202138FF004FDD55 /* EAScrollBarTests.swift */; };
 		C06DE0A0202138FF004FDD55 /* EAScrollBar.h in Headers */ = {isa = PBXBuildFile; fileRef = C06DE092202138FF004FDD55 /* EAScrollBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -19,7 +20,6 @@
 		C06DE0C920214C47004FDD55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C06DE0C720214C47004FDD55 /* LaunchScreen.storyboard */; };
 		C06DE0D420214C47004FDD55 /* EAScrollBar_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0D320214C47004FDD55 /* EAScrollBar_ExampleTests.swift */; };
 		C06DE0DF20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0DE20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift */; };
-		C06DE0EC20214C94004FDD55 /* NumberTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0EA20214C90004FDD55 /* NumberTableViewController.swift */; };
 		C06DE0F420214DC7004FDD55 /* EAScrollBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; };
 		C06DE0F520214DC7004FDD55 /* EAScrollBar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -70,6 +70,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C06AF2902021F33800A4FBEA /* NumbersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumbersViewController.swift; sourceTree = "<group>"; };
 		C06DE08F202138FF004FDD55 /* EAScrollBar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EAScrollBar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C06DE092202138FF004FDD55 /* EAScrollBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EAScrollBar.h; sourceTree = "<group>"; };
 		C06DE093202138FF004FDD55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -91,7 +92,6 @@
 		C06DE0DA20214C47004FDD55 /* EAScrollBar-ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "EAScrollBar-ExampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C06DE0DE20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAScrollBar_ExampleUITests.swift; sourceTree = "<group>"; };
 		C06DE0E020214C47004FDD55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C06DE0EA20214C90004FDD55 /* NumberTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,9 +182,9 @@
 		C06DE0AF20213FF3004FDD55 /* EAScrollBar */ = {
 			isa = PBXGroup;
 			children = (
+				C06DE0AB20213FEE004FDD55 /* EAScrollIndicator.swift */,
 				C06DE0AA20213FEE004FDD55 /* EAIndicator.swift */,
 				C06DE0A920213FEE004FDD55 /* EAIndicatorBackground.swift */,
-				C06DE0AB20213FEE004FDD55 /* EAScrollIndicator.swift */,
 			);
 			path = EAScrollBar;
 			sourceTree = "<group>";
@@ -192,8 +192,8 @@
 		C06DE0BD20214C47004FDD55 /* EAScrollBar-Example */ = {
 			isa = PBXGroup;
 			children = (
-				C06DE0EA20214C90004FDD55 /* NumberTableViewController.swift */,
 				C06DE0BE20214C47004FDD55 /* AppDelegate.swift */,
+				C06AF2902021F33800A4FBEA /* NumbersViewController.swift */,
 				C06DE0C220214C47004FDD55 /* Main.storyboard */,
 				C06DE0C520214C47004FDD55 /* Assets.xcassets */,
 				C06DE0C720214C47004FDD55 /* LaunchScreen.storyboard */,
@@ -453,8 +453,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C06DE0EC20214C94004FDD55 /* NumberTableViewController.swift in Sources */,
 				C06DE0BF20214C47004FDD55 /* AppDelegate.swift in Sources */,
+				C06AF2912021F33800A4FBEA /* NumbersViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

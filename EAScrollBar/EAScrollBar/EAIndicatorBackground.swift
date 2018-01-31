@@ -68,7 +68,7 @@ public class EAIndicatorBackground: UIView {
     _indicator                        = indicator
     _height                           = scrollView.frame.height
     _panGesture.cancelsTouchesInView  = true
-    self.backgroundColor              = UIColor.clear
+    self.backgroundColor              = UIColor.red
   }
 }
 
@@ -88,22 +88,29 @@ extension EAIndicatorBackground {
   
   fileprivate func _placeBackgroundView()
   {
-    self.translatesAutoresizingMaskIntoConstraints = false
     
-    self.topAnchor.constraint(equalTo:            _scrollView.topAnchor).isActive      = true
-    self.rightAnchor.constraint(equalTo:          _scrollView.rightAnchor).isActive    = true
-    self.bottomAnchor.constraint(equalTo:         _scrollView.bottomAnchor).isActive   = true
-    self.widthAnchor.constraint(equalToConstant:  _width).isActive                     = true
-    
-    /* Indicator Set Up */
-    self.addSubview(_indicator)
-    _panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.draggedView(_:)))
-    _indicator.isUserInteractionEnabled = true
-    _indicator.addGestureRecognizer(_panGesture)
-    _indicator.placeIndicator()
+    if let superView = self.superview  {  // Check for safe unwrap
+      
+      self.translatesAutoresizingMaskIntoConstraints = false
+      
+      self.topAnchor.constraint(equalTo:            superView.topAnchor).isActive      = true
+      self.rightAnchor.constraint(equalTo:          superView.rightAnchor).isActive    = true
+      self.bottomAnchor.constraint(equalTo:         superView.bottomAnchor).isActive   = true
+      self.widthAnchor.constraint(equalToConstant:  _width).isActive                    = true
+      
+      /* Indicator Set Up */
+      self.addSubview(_indicator)
+      _panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.draggedView(_:)))
+      _indicator.isUserInteractionEnabled = true
+      _indicator.addGestureRecognizer(_panGesture)
+      _indicator.placeIndicator()
+      
+    }else{
+      print("NO SUPER")
+    }
   }
-  
 }
+
 extension EAIndicatorBackground
 {
   /*** GESTURES/TOUCHES ***************************/

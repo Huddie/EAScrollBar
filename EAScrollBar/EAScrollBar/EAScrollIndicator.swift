@@ -19,19 +19,19 @@ public class EAScrollIndicator : NSObject
   
   public override init() { super.init() }
   
-  deinit {
-    if let activeScrollView = self.scrollView { activeScrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset)) }
-  }
-  
   public init(scrollView: UIScrollView) {
     super.init()
     
     self.scrollView = scrollView
     self.scrollView?.showsVerticalScrollIndicator = false
-    
+  
     self.setUpBackground()
     self.scrollViewObserver()
     
+  }
+  
+  public func flush() {
+    if let activeScrollView = self.scrollView { activeScrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset)) }
   }
   
   override public func observeValue(forKeyPath keyPath: String?,
@@ -58,7 +58,6 @@ extension EAScrollIndicator {
                                                 indicator: EAIndicator(color: .purple, corner: 10))
     
     self.scrollView?.superview?.addSubview(indicatorBackground)
-    
     indicatorBackground.placeBackgroundView()
   }
   
@@ -69,7 +68,6 @@ extension EAScrollIndicator {
   
 }
 
-
 /****** OBJECT EXTENSIONS *********/
 extension UIView {
   func round(corners: UIRectCorner, radius: CGFloat) {
@@ -79,4 +77,5 @@ extension UIView {
     self.layer.mask = mask
   }
 }
+
 
