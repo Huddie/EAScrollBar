@@ -64,7 +64,6 @@ public class EAIndicator: UIView
   /// Uses constraints
   fileprivate func _placeIndicator()
   {
-    
     if let backgroundView = self.superview as? EAIndicatorBackground {  // Check for safe unwrap
       
       /* Set initial required values */
@@ -82,7 +81,6 @@ public class EAIndicator: UIView
       _heightConstraint?.isActive = true
       _topConstraint?.isActive    = true
       /* End constraints */
-      
     }
     updateLocation(yPos: 0)
   }
