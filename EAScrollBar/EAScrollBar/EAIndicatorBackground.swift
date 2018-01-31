@@ -15,7 +15,7 @@ public class EAIndicatorBackground: UIView {
   fileprivate var _scrollView      : UIScrollView                   // scrollview (superview)
   fileprivate var _indicator       : EAIndicator                    // Indicator  (subview)
   fileprivate var _panGesture      = UIPanGestureRecognizer()       // Allow for scrolling
-
+  
   var width: CGFloat
   {
     get{ return _width }
@@ -38,8 +38,8 @@ public class EAIndicatorBackground: UIView {
   var scrollViewContentHeight: CGFloat
   {
     get{ return _scrollView.contentSize.height
-                - _scrollView.bounds.height
-                + _scrollView.contentInset.bottom }
+      - _scrollView.bounds.height
+      + _scrollView.contentInset.bottom }
   }
   
   override init(frame: CGRect)
@@ -68,7 +68,7 @@ public class EAIndicatorBackground: UIView {
     _indicator                        = indicator
     _height                           = scrollView.frame.height
     _panGesture.cancelsTouchesInView  = true
-    self.backgroundColor              = UIColor.groupTableViewBackground.withAlphaComponent(0.6)
+    self.backgroundColor              = UIColor.clear
   }
 }
 
@@ -109,16 +109,16 @@ extension EAIndicatorBackground
   /*** GESTURES/TOUCHES ***************************/
   @objc func draggedView(_ sender:UIPanGestureRecognizer)
   {
-
+    
     let location      = sender.translation(in: self)
     let yPosition     = location.y * scrollViewContentHeight / _height
     
     _scrollView.setContentOffset(CGPoint(x: _scrollView.contentOffset.x,
                                          y: _scrollView.contentOffset.y + yPosition),
-                                         animated: false)
+                                 animated: false)
     
     sender.setTranslation(CGPoint.zero, in: self)
-
+    
   }
   
   override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)

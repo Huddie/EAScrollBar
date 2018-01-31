@@ -10,20 +10,20 @@ import UIKit
 
 public class EAIndicator: UIView
 {
-
+  
   /**** Private *********************************/
   
   fileprivate let _heightMultiplier : CGFloat = 0.05            // Value used to resize indicator height appropiratly                  [Constant]
   fileprivate var _topBottomPadding : CGFloat = 20.0            // Value used to determine top and bottom paddding                     [Get, Set]
   fileprivate var _minimumHeight    : CGFloat = 13.0            // Value used to determine minimum height of indicator when compressed [Get, Set]
-
+  
   fileprivate var _indicatorWidth   : CGFloat  = 0.0            // The width of the indicator, matches width of EAIndicatorBackground  [Get]
   fileprivate var _indicatorHeight  : CGFloat  = 0.0            // The height of the indicator, matches height of EAIndicatorBackground
   
   fileprivate var _backgroundView   : EAIndicatorBackground?    // The EAIndicatorBackground which will host the indicator
   fileprivate var _heightConstraint : NSLayoutConstraint?       // Height Constraints of indicator which will allow for resizing
   fileprivate var _topConstraint    : NSLayoutConstraint?       // Top Constraints of indicator which will allow for proper alighment when resized
-
+  
   
   /// Easily set, get the indicator width
   var indicatorWidth: CGFloat
@@ -50,7 +50,7 @@ public class EAIndicator: UIView
   
   
   convenience init(color: UIColor? = UIColor.gray, // Color of indicator
-                   corner: CGFloat? = 2)           // Corner radius of top/bottom left corners
+    corner: CGFloat? = 2)           // Corner radius of top/bottom left corners
   {
     
     self.init()
@@ -73,11 +73,11 @@ public class EAIndicator: UIView
       _indicatorWidth  = backgroundView.width
       
       /* Constraints */
-      self.rightAnchor.constraint(equalTo: backgroundView.rightAnchor).isActive  = true
-      self.widthAnchor.constraint(equalTo: backgroundView.widthAnchor).isActive  = true
-
+      self.rightAnchor.constraint(equalTo: backgroundView.rightAnchor).isActive     = true
+      self.widthAnchor.constraint(equalToConstant: backgroundView.width / 3).isActive = true
+      
       _heightConstraint = self.heightAnchor.constraint(equalToConstant:  _indicatorHeight)
-      _topConstraint    = self.topAnchor.constraint(equalTo:             backgroundView.topAnchor, constant: 0)
+      _topConstraint    = self.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 0)
       
       _heightConstraint?.isActive = true
       _topConstraint?.isActive    = true
@@ -88,7 +88,7 @@ public class EAIndicator: UIView
   
   /// This function will update the location of the indicator within the host view
   fileprivate func _updateLocation(yPos: CGFloat){
-
+    
     var newHeight: CGFloat = 0.0                                                                      // Blank height
     
     var convertedY = yPos * (_backgroundView?.height)! / (_backgroundView?.scrollViewContentHeight)!  // Converted Y to match the view rather then the contentSize
@@ -99,7 +99,7 @@ public class EAIndicator: UIView
     if convertedY <= _topBottomPadding                                                                // Check if we have passed the top padding and need to begin compression
     {
       newHeight = _indicatorHeight + abs(convertedY) - _topBottomPadding > _minimumHeight ?
-                    _indicatorHeight + abs(convertedY) - _topBottomPadding : _minimumHeight
+        _indicatorHeight + abs(convertedY) - _topBottomPadding : _minimumHeight
       
       _heightConstraint?.constant = newHeight
       _topConstraint?.constant = _topBottomPadding
@@ -108,7 +108,7 @@ public class EAIndicator: UIView
     {
       let difference = convertedY + _indicatorHeight - (_backgroundView?.frame.height)! - _topBottomPadding // Some pos. number
       newHeight                   = _indicatorHeight - difference > _minimumHeight ?
-                                    _indicatorHeight - difference : _minimumHeight
+        _indicatorHeight - difference : _minimumHeight
       
       _heightConstraint?.constant = newHeight
       _topConstraint?.constant    = (_backgroundView?.frame.height)! - _topBottomPadding - (_heightConstraint?.constant)! // Reposition top

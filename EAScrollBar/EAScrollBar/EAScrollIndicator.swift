@@ -39,7 +39,7 @@ public class EAScrollIndicator : NSObject
                                     change: [NSKeyValueChangeKey : Any]?,
                                     context: UnsafeMutableRawPointer?) {
     
-
+    
     if keyPath == #keyPath(UIScrollView.contentOffset) {
       let _loc = (object as? UIScrollView)?.contentOffset
       indicatorBackground.updateLocation(yPos: (_loc?.y)!)
@@ -48,13 +48,13 @@ public class EAScrollIndicator : NSObject
 }
 
 extension EAScrollIndicator {
-
+  
   /** PRIVATE ****************************/
   
   fileprivate func setUpBackground(){
     
     // Set up EAIndicatorBackground
-    indicatorBackground = EAIndicatorBackground(width: 10, scrollView: self.scrollView!,
+    indicatorBackground = EAIndicatorBackground(width: 20, scrollView: self.scrollView!,
                                                 indicator: EAIndicator(color: .purple, corner: 10))
     
     self.scrollView?.superview?.addSubview(indicatorBackground)
@@ -66,7 +66,7 @@ extension EAScrollIndicator {
     // Set up observer
     self.scrollView?.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: [.old, .new], context: nil)
   }
-
+  
 }
 
 
@@ -79,3 +79,4 @@ extension UIView {
     self.layer.mask = mask
   }
 }
+

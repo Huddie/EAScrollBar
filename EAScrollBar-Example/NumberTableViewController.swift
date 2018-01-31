@@ -12,6 +12,7 @@ import EAScrollBar
 class NumberTableViewController: UITableViewController {
     private var scrollIndicator  = EAScrollIndicator()
 
+  
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollIndicator = EAScrollIndicator(scrollView: tableView)
