@@ -13,17 +13,25 @@ public class EAIndicator: UIView
   
   /**** Private *********************************/
   
-  fileprivate let _heightMultiplier : CGFloat = 0.05            // Value used to resize indicator height appropiratly                  [Constant]
-  fileprivate var _topBottomPadding : CGFloat = 20.0            // Value used to determine top and bottom paddding                     [Get, Set]
-  fileprivate var _minimumHeight    : CGFloat = 13.0            // Value used to determine minimum height of indicator when compressed [Get, Set]
+  fileprivate let _heightMultiplier   : CGFloat = 0.05            // Value used to resize indicator height appropiratly                  [Constant]
+  fileprivate var _topBottomPadding   : CGFloat = 20.0            // Value used to determine top and bottom paddding                     [Get, Set]
+  fileprivate var _minimumHeight      : CGFloat = 13.0            // Value used to determine minimum height of indicator when compressed [Get, Set]
   
-  fileprivate var _indicatorWidth   : CGFloat  = 0.0            // The width of the indicator, matches width of EAIndicatorBackground  [Get]
-  fileprivate var _indicatorHeight  : CGFloat  = 0.0            // The height of the indicator, matches height of EAIndicatorBackground
+  fileprivate var _indicatorWidth     : CGFloat = 0.0             // The width of the indicator, matches width of EAIndicatorBackground  [Get]
+  fileprivate var _indicatorHeight    : CGFloat = 0.0             // The height of the indicator, matches height of EAIndicatorBackground
   
-  fileprivate var _backgroundView   : EAIndicatorBackground?    // The EAIndicatorBackground which will host the indicator
-  fileprivate var _heightConstraint : NSLayoutConstraint?       // Height Constraints of indicator which will allow for resizing
-  fileprivate var _topConstraint    : NSLayoutConstraint?       // Top Constraints of indicator which will allow for proper alighment when resized
+  fileprivate var _backgroundView     : EAIndicatorBackground?    // The EAIndicatorBackground which will host the indicator
+  fileprivate var _heightConstraint   : NSLayoutConstraint?       // Height Constraints of indicator which will allow for resizing
+  fileprivate var _topConstraint      : NSLayoutConstraint?       // Top Constraints of indicator which will allow for proper alighment when resized
+  fileprivate var _shadeTopConstraint : NSLayoutConstraint?       // Top Constraints of indicator which will allow for proper alighment when resized
+
   
+  let shade: UIView = {
+    let view                                       = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor                           = .black
+    return view
+  }()
   
   /// Easily set, get the indicator width
   var indicatorWidth: CGFloat
@@ -48,13 +56,12 @@ public class EAIndicator: UIView
   override init(frame: CGRect) { super.init(frame: frame) }
   required public init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
   
-  
   convenience init(color: UIColor? = UIColor.gray, // Color of indicator
-    corner: CGFloat? = 2)           // Corner radius of top/bottom left corners
+    corner: CGFloat? = 2)                          // Corner radius of top/bottom left corners
   {
-    
     self.init()
     self.backgroundColor                           = color!
+    self.layer.cornerRadius                        = corner!
     self.translatesAutoresizingMaskIntoConstraints = false
   }
   
@@ -66,28 +73,45 @@ public class EAIndicator: UIView
   {
     if let backgroundView = self.superview as? EAIndicatorBackground {  // Check for safe unwrap
       
+      self.addSubview(shade)
+
       /* Set initial required values */
       _backgroundView  = backgroundView
       _indicatorHeight = backgroundView.height * _heightMultiplier
       _indicatorWidth  = backgroundView.width
       
       /* Constraints */
-      self.rightAnchor.constraint(equalTo: backgroundView.rightAnchor).isActive     = true
-      self.widthAnchor.constraint(equalToConstant: backgroundView.width / 3).isActive = true
+      self.rightAnchor.constraint(equalTo: backgroundView.rightAnchor).isActive        = true
+      self.widthAnchor.constraint(equalToConstant: backgroundView.width / 3).isActive  = true
       
-      _heightConstraint = self.heightAnchor.constraint(equalToConstant:  _indicatorHeight)
-      _topConstraint    = self.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 0)
+      _heightConstraint   = self.heightAnchor.constraint(equalToConstant:  _indicatorHeight)
+      _topConstraint      = self.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 0)
       
-      _heightConstraint?.isActive = true
-      _topConstraint?.isActive    = true
+      _heightConstraint?.isActive    = true
+      _topConstraint?.isActive       = true
+      
+      shade.rightAnchor.constraint(equalTo:  self.rightAnchor).isActive                = true
+      shade.leftAnchor.constraint(equalTo:   self.leftAnchor).isActive                 = true
+      shade.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive               = true
+      
+      _shadeTopConstraint = shade.topAnchor.constraint(equalTo: self.topAnchor,
+                                                       constant: _indicatorHeight)
+      
+      _shadeTopConstraint?.isActive  = true
+
       /* End constraints */
     }
-    updateLocation(yPos: 0)
+    shade.layer.cornerRadius = self.layer.cornerRadius
+    
+    updateLocation(yPos: 0, sectionProgress: 0)                                                       // Set scrollview and progress to zero
+    
   }
   
   /// This function will update the location of the indicator within the host view
-  fileprivate func _updateLocation(yPos: CGFloat){
-    
+  fileprivate func _updateLocation(yPos: CGFloat, sectionProgress: CGFloat)
+  {
+
+    // Update indicator
     var newHeight: CGFloat = 0.0                                                                      // Blank height
     
     var convertedY = yPos * (_backgroundView?.height)! / (_backgroundView?.scrollViewContentHeight)!
@@ -101,7 +125,7 @@ public class EAIndicator: UIView
       _heightConstraint?.constant = newHeight
       _topConstraint?.constant = _topBottomPadding
     }
-    else if convertedY >= (_backgroundView?.height)! - _topBottomPadding - _indicatorHeight                             // Check if we have passed bottom padding and need to begin compression
+    else if convertedY >= (_backgroundView?.height)! - _topBottomPadding - _indicatorHeight                               // Check if we have passed bottom padding and need to begin compression
     {
 
       let difference = convertedY - ((_backgroundView?.height)! - _topBottomPadding - _indicatorHeight)                   // Some pos. number
@@ -116,10 +140,15 @@ public class EAIndicator: UIView
       _heightConstraint?.constant = _indicatorHeight
       _topConstraint?.constant =  yPos * (_backgroundView?.height)! / (_backgroundView?.scrollViewContentHeight)!
     }
+    
+    // Update shade
+    let convertedPercent          = sectionProgress / 100.0  * _indicatorHeight
+    _shadeTopConstraint?.constant = _indicatorHeight - convertedPercent
+    
     self.updateConstraints()
   }
   public func placeIndicator() { _placeIndicator() }
-  public func updateLocation(yPos: CGFloat) { _updateLocation(yPos: yPos) }
+  public func updateLocation(yPos: CGFloat, sectionProgress: CGFloat) { _updateLocation(yPos: yPos, sectionProgress: sectionProgress) }
 }
 
 

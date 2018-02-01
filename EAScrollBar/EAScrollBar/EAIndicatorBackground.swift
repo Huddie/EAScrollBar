@@ -8,7 +8,8 @@
 
 import UIKit
 
-public class EAIndicatorBackground: UIView {
+public class EAIndicatorBackground: UIView
+{
   
   fileprivate var _width           : CGFloat   = 0.0                // Background width, will determine the indicator width
   fileprivate var _height          : CGFloat   = 0.0                // Background height
@@ -68,7 +69,7 @@ public class EAIndicatorBackground: UIView {
     _indicator                        = indicator
     _height                           = scrollView.frame.height
     _panGesture.cancelsTouchesInView  = true
-    self.backgroundColor              = UIColor.red
+    self.backgroundColor              = UIColor.clear
   }
 }
 
@@ -76,7 +77,8 @@ extension EAIndicatorBackground {
   
   /** PUBLIC ****************************/
   public func placeBackgroundView(){ _placeBackgroundView()}
-  public func updateLocation(yPos: CGFloat) { _updateLocation(yPos: yPos) }
+  public func updateLocation(yPos: CGFloat, sectionProgress: CGFloat){ _updateLocation(yPos: yPos,
+                                                                                       sectionProgress: sectionProgress) }
 }
 
 extension EAIndicatorBackground {
@@ -84,7 +86,8 @@ extension EAIndicatorBackground {
   /** PRIVATE ***************************/
   
   /// Passes the updated location to the indicator
-  fileprivate func _updateLocation(yPos: CGFloat){ _indicator.updateLocation(yPos: yPos) }
+  fileprivate func _updateLocation(yPos: CGFloat, sectionProgress: CGFloat){ _indicator.updateLocation(yPos: yPos,
+                                                                                                       sectionProgress: sectionProgress) }
   
   fileprivate func _placeBackgroundView()
   {
@@ -96,17 +99,19 @@ extension EAIndicatorBackground {
       self.topAnchor.constraint(equalTo:            superView.topAnchor).isActive      = true
       self.rightAnchor.constraint(equalTo:          superView.rightAnchor).isActive    = true
       self.bottomAnchor.constraint(equalTo:         superView.bottomAnchor).isActive   = true
-      self.widthAnchor.constraint(equalToConstant:  _width).isActive                    = true
+      self.widthAnchor.constraint(equalToConstant:  _width).isActive                   = true
       
       /* Indicator Set Up */
       self.addSubview(_indicator)
-      _panGesture = UIPanGestureRecognizer(target: self, action: #selector(self.draggedView(_:)))
+      _panGesture = UIPanGestureRecognizer(target: self,
+                                           action: #selector(self.draggedView(_:)))
+      
       _indicator.isUserInteractionEnabled = true
       _indicator.addGestureRecognizer(_panGesture)
       _indicator.placeIndicator()
       
     }else{
-      print("NO SUPER")
+      assert(true, "No superview")
     }
   }
 }

@@ -9,18 +9,26 @@
 import UIKit
 import EAScrollBar
 
+
 class NumbersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
   private var scrollIndicator = EAScrollIndicator()
   
   @IBOutlet var tableView: UITableView!
+  
   override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.reloadData()
     }
   override func viewDidAppear(_ animated: Bool) {
-    scrollIndicator = EAScrollIndicator(scrollView: self.tableView)
+    
+    scrollIndicator = EAScrollIndicator(scrollView: self.tableView,
+                                        points: [EAIndicatorPoint(title: "Hello", location: 400),
+                                                 EAIndicatorPoint(title: "World", location: 800),
+                                                 EAIndicatorPoint(title: "!", location: 900)])
+    
   }
+  
   override func viewDidDisappear(_ animated: Bool) {
     scrollIndicator.flush()
   }

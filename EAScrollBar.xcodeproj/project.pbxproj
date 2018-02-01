@@ -20,8 +20,9 @@
 		C06DE0C920214C47004FDD55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C06DE0C720214C47004FDD55 /* LaunchScreen.storyboard */; };
 		C06DE0D420214C47004FDD55 /* EAScrollBar_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0D320214C47004FDD55 /* EAScrollBar_ExampleTests.swift */; };
 		C06DE0DF20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0DE20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift */; };
-		C06DE0F420214DC7004FDD55 /* EAScrollBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; };
-		C06DE0F520214DC7004FDD55 /* EAScrollBar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C0E1D3232023B1A9003FAA70 /* EAIndicatorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1D3222023B1A9003FAA70 /* EAIndicatorPoint.swift */; };
+		C0E1D3242023BF05003FAA70 /* EAScrollBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; };
+		C0E1D3252023BF05003FAA70 /* EAScrollBar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +47,7 @@
 			remoteGlobalIDString = C06DE0BB20214C47004FDD55;
 			remoteInfo = "EAScrollBar-Example";
 		};
-		C06DE0F620214DC7004FDD55 /* PBXContainerItemProxy */ = {
+		C0E1D3262023BF05003FAA70 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C06DE086202138FF004FDD55 /* Project object */;
 			proxyType = 1;
@@ -56,13 +57,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C06DE0F820214DC7004FDD55 /* Embed Frameworks */ = {
+		C0E1D3282023BF05003FAA70 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C06DE0F520214DC7004FDD55 /* EAScrollBar.framework in Embed Frameworks */,
+				C0E1D3252023BF05003FAA70 /* EAScrollBar.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,6 +93,7 @@
 		C06DE0DA20214C47004FDD55 /* EAScrollBar-ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "EAScrollBar-ExampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C06DE0DE20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAScrollBar_ExampleUITests.swift; sourceTree = "<group>"; };
 		C06DE0E020214C47004FDD55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0E1D3222023B1A9003FAA70 /* EAIndicatorPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAIndicatorPoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C06DE0F420214DC7004FDD55 /* EAScrollBar.framework in Frameworks */,
+				C0E1D3242023BF05003FAA70 /* EAScrollBar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,6 +187,7 @@
 				C06DE0AB20213FEE004FDD55 /* EAScrollIndicator.swift */,
 				C06DE0AA20213FEE004FDD55 /* EAIndicator.swift */,
 				C06DE0A920213FEE004FDD55 /* EAIndicatorBackground.swift */,
+				C0E1D3222023B1A9003FAA70 /* EAIndicatorPoint.swift */,
 			);
 			path = EAScrollBar;
 			sourceTree = "<group>";
@@ -284,12 +287,12 @@
 				C06DE0B820214C47004FDD55 /* Sources */,
 				C06DE0B920214C47004FDD55 /* Frameworks */,
 				C06DE0BA20214C47004FDD55 /* Resources */,
-				C06DE0F820214DC7004FDD55 /* Embed Frameworks */,
+				C0E1D3282023BF05003FAA70 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C06DE0F720214DC7004FDD55 /* PBXTargetDependency */,
+				C0E1D3272023BF05003FAA70 /* PBXTargetDependency */,
 			);
 			name = "EAScrollBar-Example";
 			productName = "EAScrollBar-Example";
@@ -437,6 +440,7 @@
 			files = (
 				C06DE0AC20213FEE004FDD55 /* EAIndicatorBackground.swift in Sources */,
 				C06DE0AE20213FEE004FDD55 /* EAScrollIndicator.swift in Sources */,
+				C0E1D3232023B1A9003FAA70 /* EAIndicatorPoint.swift in Sources */,
 				C06DE0AD20213FEE004FDD55 /* EAIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -492,10 +496,10 @@
 			target = C06DE0BB20214C47004FDD55 /* EAScrollBar-Example */;
 			targetProxy = C06DE0DB20214C47004FDD55 /* PBXContainerItemProxy */;
 		};
-		C06DE0F720214DC7004FDD55 /* PBXTargetDependency */ = {
+		C0E1D3272023BF05003FAA70 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C06DE08E202138FF004FDD55 /* EAScrollBar */;
-			targetProxy = C06DE0F620214DC7004FDD55 /* PBXContainerItemProxy */;
+			targetProxy = C0E1D3262023BF05003FAA70 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
