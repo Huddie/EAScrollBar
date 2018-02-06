@@ -33,6 +33,12 @@ public class EAIndicator: UIView
     return view
   }()
   
+  let scroller: UIView = {
+    let view                                       = UIView()
+    view.backgroundColor                           = .purple
+    return view
+  }()
+  
   /// Easily set, get the indicator width
   var indicatorWidth: CGFloat
   {
@@ -60,9 +66,13 @@ public class EAIndicator: UIView
     corner: CGFloat? = 2)                          // Corner radius of top/bottom left corners
   {
     self.init()
-    self.backgroundColor                           = color!
-    self.layer.cornerRadius                        = corner!
+    
+    self.clipsToBounds                             = true
+    self.backgroundColor                           = UIColor.clear
+    self.scroller.backgroundColor                  = color!
+    self.shade.backgroundColor                     = color!.darker()
     self.translatesAutoresizingMaskIntoConstraints = false
+  
   }
   
   /// This function will replace the indicator in the top of the EAIndicatorBackground that hosts it
@@ -73,16 +83,22 @@ public class EAIndicator: UIView
   {
     if let backgroundView = self.superview as? EAIndicatorBackground {  // Check for safe unwrap
       
-      self.addSubview(shade)
 
       /* Set initial required values */
       _backgroundView  = backgroundView
       _indicatorHeight = backgroundView.height * _heightMultiplier
       _indicatorWidth  = backgroundView.width
       
+      scroller.frame = CGRect(x: 0, y: 0, width: backgroundView.width, height: _indicatorHeight)
+      scroller.addSubview(shade)
+      self.addSubview(scroller)
+      
+      scroller.round(corners: [.topLeft, .bottomLeft], radius: 4)
+
+      
       /* Constraints */
       self.rightAnchor.constraint(equalTo: backgroundView.rightAnchor).isActive        = true
-      self.widthAnchor.constraint(equalToConstant: backgroundView.width / 3).isActive  = true
+      self.widthAnchor.constraint(equalToConstant: backgroundView.width / 1.5).isActive  = true
       
       _heightConstraint   = self.heightAnchor.constraint(equalToConstant:  _indicatorHeight)
       _topConstraint      = self.topAnchor.constraint(equalTo: backgroundView.topAnchor, constant: 0)
@@ -90,9 +106,9 @@ public class EAIndicator: UIView
       _heightConstraint?.isActive    = true
       _topConstraint?.isActive       = true
       
-      shade.rightAnchor.constraint(equalTo:  self.rightAnchor).isActive                = true
-      shade.leftAnchor.constraint(equalTo:   self.leftAnchor).isActive                 = true
-      shade.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive               = true
+      shade.rightAnchor.constraint(equalTo:  scroller.rightAnchor).isActive                = true
+      shade.leftAnchor.constraint(equalTo:   scroller.leftAnchor).isActive                 = true
+      shade.bottomAnchor.constraint(equalTo: scroller.bottomAnchor).isActive               = true
       
       _shadeTopConstraint = shade.topAnchor.constraint(equalTo: self.topAnchor,
                                                        constant: _indicatorHeight)
@@ -101,18 +117,19 @@ public class EAIndicator: UIView
 
       /* End constraints */
     }
-    shade.layer.cornerRadius = self.layer.cornerRadius
+    
+    //shade.layer.cornerRadius = self.layer.cornerRadius
     
     updateLocation(yPos: 0, sectionProgress: 0)                                                       // Set scrollview and progress to zero
     
   }
-  
+
   /// This function will update the location of the indicator within the host view
   fileprivate func _updateLocation(yPos: CGFloat, sectionProgress: CGFloat)
   {
 
     // Update indicator
-    var newHeight: CGFloat = 0.0                                                                      // Blank height
+    var newHeight: CGFloat = _indicatorHeight
     
     var convertedY = yPos * (_backgroundView?.height)! / (_backgroundView?.scrollViewContentHeight)!
     convertedY = convertedY >= 0 ? convertedY : 0                                                     // Allow Y to be positive values only
@@ -146,7 +163,10 @@ public class EAIndicator: UIView
     _shadeTopConstraint?.constant = _indicatorHeight - convertedPercent
     
     self.updateConstraints()
+    scroller.frame = CGRect(x: 0, y: 0, width: (_backgroundView?.width)!, height: newHeight)
+    scroller.round(corners: [.topLeft, .bottomLeft], radius: 4)
   }
+  
   public func placeIndicator() { _placeIndicator() }
   public func updateLocation(yPos: CGFloat, sectionProgress: CGFloat) { _updateLocation(yPos: yPos, sectionProgress: sectionProgress) }
 }

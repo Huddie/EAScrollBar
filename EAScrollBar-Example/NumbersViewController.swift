@@ -10,8 +10,11 @@ import UIKit
 import EAScrollBar
 
 
-class NumbersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+class NumbersViewController: UIViewController,
+                             UITableViewDelegate,
+                             UITableViewDataSource,
+                             EAScrollDelegate {
+  
   private var scrollIndicator = EAScrollIndicator()
   
   @IBOutlet var tableView: UITableView!
@@ -21,12 +24,9 @@ class NumbersViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.reloadData()
     }
   override func viewDidAppear(_ animated: Bool) {
-    
-    scrollIndicator = EAScrollIndicator(scrollView: self.tableView,
-                                        points: [EAIndicatorPoint(title: "Hello", location: 400),
-                                                 EAIndicatorPoint(title: "World", location: 800),
-                                                 EAIndicatorPoint(title: "!", location: 900)])
-    
+
+    scrollIndicator = EAScrollIndicator(scrollView: self.tableView, points: [ EAIndicatorPoint(title: "life", location: 400),EAIndicatorPoint(title: "Once there was a boy who was starved", location: 600),EAIndicatorPoint(title: "!", location: 900),EAIndicatorPoint(title: "death", location: 1000)])
+
   }
   
   override func viewDidDisappear(_ animated: Bool) {
@@ -51,9 +51,8 @@ class NumbersViewController: UIViewController, UITableViewDelegate, UITableViewD
     return cell
   }
 
-
+  func sectionPercent(percent: CGFloat) {
+    /* Percent the section is complete */
+  }
 }
 
-extension UIScrollView {
-   func addCustomBars(){  }
-}

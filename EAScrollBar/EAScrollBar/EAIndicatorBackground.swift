@@ -69,13 +69,14 @@ public class EAIndicatorBackground: UIView
     _indicator                        = indicator
     _height                           = scrollView.frame.height
     _panGesture.cancelsTouchesInView  = true
-    self.backgroundColor              = UIColor.clear
+    self.backgroundColor              = UIColor.groupTableViewBackground.withAlphaComponent(0.2)
   }
 }
 
 extension EAIndicatorBackground {
   
   /** PUBLIC ****************************/
+  public func updateHeight(){ _updateHeight()}
   public func placeBackgroundView(){ _placeBackgroundView()}
   public func updateLocation(yPos: CGFloat, sectionProgress: CGFloat){ _updateLocation(yPos: yPos,
                                                                                        sectionProgress: sectionProgress) }
@@ -84,6 +85,8 @@ extension EAIndicatorBackground {
 extension EAIndicatorBackground {
   
   /** PRIVATE ***************************/
+  
+  fileprivate func _updateHeight() { _height = _scrollView.frame.height }
   
   /// Passes the updated location to the indicator
   fileprivate func _updateLocation(yPos: CGFloat, sectionProgress: CGFloat){ _indicator.updateLocation(yPos: yPos,
@@ -94,8 +97,7 @@ extension EAIndicatorBackground {
     
     if let superView = self.superview  {  // Check for safe unwrap
       
-      self.translatesAutoresizingMaskIntoConstraints = false
-      
+      self.translatesAutoresizingMaskIntoConstraints                                   = false
       self.topAnchor.constraint(equalTo:            superView.topAnchor).isActive      = true
       self.rightAnchor.constraint(equalTo:          superView.rightAnchor).isActive    = true
       self.bottomAnchor.constraint(equalTo:         superView.bottomAnchor).isActive   = true
@@ -110,9 +112,7 @@ extension EAIndicatorBackground {
       _indicator.addGestureRecognizer(_panGesture)
       _indicator.placeIndicator()
       
-    }else{
-      assert(true, "No superview")
-    }
+    }else{ assert(true, "No superview") }
   }
 }
 

@@ -20,9 +20,10 @@
 		C06DE0C920214C47004FDD55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C06DE0C720214C47004FDD55 /* LaunchScreen.storyboard */; };
 		C06DE0D420214C47004FDD55 /* EAScrollBar_ExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0D320214C47004FDD55 /* EAScrollBar_ExampleTests.swift */; };
 		C06DE0DF20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06DE0DE20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift */; };
-		C0E1D3232023B1A9003FAA70 /* EAIndicatorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1D3222023B1A9003FAA70 /* EAIndicatorPoint.swift */; };
+		C09065792023FCFB00F5D61F /* EAScrollTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09065782023FCFB00F5D61F /* EAScrollTitleView.swift */; };
 		C0E1D3242023BF05003FAA70 /* EAScrollBar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; };
 		C0E1D3252023BF05003FAA70 /* EAScrollBar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C06DE08F202138FF004FDD55 /* EAScrollBar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C0E1D32A2023BFD0003FAA70 /* EAIndicatorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E1D3222023B1A9003FAA70 /* EAIndicatorPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		C06DE0DA20214C47004FDD55 /* EAScrollBar-ExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "EAScrollBar-ExampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C06DE0DE20214C47004FDD55 /* EAScrollBar_ExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAScrollBar_ExampleUITests.swift; sourceTree = "<group>"; };
 		C06DE0E020214C47004FDD55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C09065782023FCFB00F5D61F /* EAScrollTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAScrollTitleView.swift; sourceTree = "<group>"; };
 		C0E1D3222023B1A9003FAA70 /* EAIndicatorPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EAIndicatorPoint.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -188,6 +190,7 @@
 				C06DE0AA20213FEE004FDD55 /* EAIndicator.swift */,
 				C06DE0A920213FEE004FDD55 /* EAIndicatorBackground.swift */,
 				C0E1D3222023B1A9003FAA70 /* EAIndicatorPoint.swift */,
+				C09065782023FCFB00F5D61F /* EAScrollTitleView.swift */,
 			);
 			path = EAScrollBar;
 			sourceTree = "<group>";
@@ -438,9 +441,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0E1D32A2023BFD0003FAA70 /* EAIndicatorPoint.swift in Sources */,
+				C09065792023FCFB00F5D61F /* EAScrollTitleView.swift in Sources */,
 				C06DE0AC20213FEE004FDD55 /* EAIndicatorBackground.swift in Sources */,
 				C06DE0AE20213FEE004FDD55 /* EAScrollIndicator.swift in Sources */,
-				C0E1D3232023B1A9003FAA70 /* EAIndicatorPoint.swift in Sources */,
 				C06DE0AD20213FEE004FDD55 /* EAIndicator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -572,7 +576,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -626,7 +630,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -721,6 +725,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8T736HH745;
 				INFOPLIST_FILE = "EAScrollBar-Example/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ehudadler.EAScrollBar-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -737,6 +742,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8T736HH745;
 				INFOPLIST_FILE = "EAScrollBar-Example/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ehudadler.EAScrollBar-Example";
 				PRODUCT_NAME = "$(TARGET_NAME)";
