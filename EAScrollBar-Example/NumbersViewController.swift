@@ -25,7 +25,7 @@ class NumbersViewController: UIViewController,
     }
   override func viewDidAppear(_ animated: Bool) {
 
-    scrollIndicator = EAScrollIndicator(scrollView: self.tableView, points: [ EAIndicatorPoint(title: "life", location: 400),EAIndicatorPoint(title: "Once there was a boy who was starved", location: 600),EAIndicatorPoint(title: "!", location: 900),EAIndicatorPoint(title: "death", location: 1000)])
+    scrollIndicator = EAScrollIndicator(scrollView: self.tableView, points: [ EAIndicatorPoint(title: "One", location: 400),EAIndicatorPoint(title: "Two", location: 600),EAIndicatorPoint(title: "Three", location: 900),EAIndicatorPoint(title: "Four", location: 1000)])
 
   }
   

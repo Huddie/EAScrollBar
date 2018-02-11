@@ -21,6 +21,8 @@ public class EAScrollIndicator : NSObject
   fileprivate var titleView                          = EAScrollTitleView()
   fileprivate var previousScrollViewYOffset: CGFloat = 0.0
   fileprivate var delegate                           : EAScrollDelegate?
+  fileprivate weak var titleTimer                    : Timer?
+  fileprivate var showedThisSection                  : Bool?
 
   /**** Public private(set) *********************************/
   public fileprivate(set) weak var scrollView : UIScrollView?
@@ -32,6 +34,7 @@ public class EAScrollIndicator : NSObject
   {
     super.init()
     
+    self.showedThisSection                        = false
     self.scrollView                               = scrollView
     self.points                                   = points
     
@@ -64,9 +67,7 @@ public class EAScrollIndicator : NSObject
       {
         
         var percent     : CGFloat = 0.0
-        let scrollSpeed : CGFloat = yPos - previousScrollViewYOffset;
         previousScrollViewYOffset = yPos
-        
         if let index = self.points?.index(where: { $0.location > yPos })
         {
           if let pointSet = self.points
@@ -91,13 +92,32 @@ public class EAScrollIndicator : NSObject
             
             delegate?.sectionPercent(percent: percent)
             
-            if abs(scrollSpeed) > 30 {titleView.setTitle(title: self.points![index].title)}
-            else{ titleView.hide() }
+            if percent < 20
+            {
+
+              if titleTimer == nil && !showedThisSection!
+              {
+                showedThisSection = true
+                titleView.setTitle(title: self.points![index].title)
+                titleTimer = Timer.scheduledTimer(timeInterval: 1,
+                                                  target: self,
+                                                  selector: #selector(timerFired),
+                                                  userInfo: nil,
+                                                  repeats: false)
+              }
+            }
+            else
+            {
+              showedThisSection = false
+              titleTimer?.invalidate()
+              titleView.hide()
+            }
           }
         }
         indicatorBackground.updateLocation(yPos: yPos, sectionProgress:  percent)
         
-      }else if keyPath == #keyPath(UIScrollView.contentSize){
+      }else if keyPath == #keyPath(UIScrollView.contentSize)
+      {
         print("CONTENT SIZE")
         indicatorBackground.placeBackgroundView()
       }
@@ -105,7 +125,17 @@ public class EAScrollIndicator : NSObject
   }
 }
 
-extension EAScrollIndicator {
+extension EAScrollIndicator
+{
+  // TIMER
+  @objc private func timerFired()
+  {
+    titleTimer?.invalidate()
+    titleView.hide()
+  }
+}
+extension EAScrollIndicator
+{
   
   /** PRIVATE ****************************/
   
@@ -118,6 +148,7 @@ extension EAScrollIndicator {
     self.scrollView?.superview?.addSubview(indicatorBackground)
     self.scrollView?.superview?.addSubview(titleView)
     titleView.setUp()
+    titleView.hide()
     indicatorBackground.placeBackgroundView()
     NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
 
