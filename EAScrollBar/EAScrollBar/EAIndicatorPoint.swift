@@ -10,8 +10,8 @@ import UIKit
 
 public class EAIndicatorPoint
 {
-  var title     : String
-  var location  : CGFloat
+  public var title     : String
+  public var location  : CGFloat
 
   public init(title: String, location: CGFloat)
   {

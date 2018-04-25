@@ -25,7 +25,6 @@ public class EAIndicator: UIView
   fileprivate var _topConstraint      : NSLayoutConstraint?       // Top Constraints of indicator which will allow for proper alighment when resized
   fileprivate var _shadeTopConstraint : NSLayoutConstraint?       // Top Constraints of indicator which will allow for proper alighment when resized
 
-  
   let shade: UIView = {
     let view                                       = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false

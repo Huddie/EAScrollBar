@@ -22,15 +22,15 @@ class NumbersViewController: UIViewController,
   override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.reloadData()
-    }
-  override func viewDidAppear(_ animated: Bool) {
-
-    scrollIndicator = EAScrollIndicator(scrollView: self.tableView, points: [ EAIndicatorPoint(title: "One", location: 400),EAIndicatorPoint(title: "Two", location: 600),EAIndicatorPoint(title: "Three", location: 900),EAIndicatorPoint(title: "Four", location: 1000)])
-
   }
   
-  override func viewDidDisappear(_ animated: Bool) {
-    scrollIndicator.flush()
+  override func viewDidAppear(_ animated: Bool) {
+
+    scrollIndicator = EAScrollIndicator(scrollView: self.tableView,
+                                        points: [EAIndicatorPoint(title: "One", location: 400),
+                                                 EAIndicatorPoint(title: "Two", location: 600),
+                                                 EAIndicatorPoint(title: "Three", location: 900),
+                                                 EAIndicatorPoint(title: "Four", location: 1000)])    
   }
   
   override func didReceiveMemoryWarning() {

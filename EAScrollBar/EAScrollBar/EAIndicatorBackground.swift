@@ -75,7 +75,7 @@ public class EAIndicatorBackground: UIView
 
 extension EAIndicatorBackground {
   
-  /** PUBLIC ****************************/
+  /** PUBLIC **/
   public func updateHeight(){ _updateHeight()}
   public func placeBackgroundView(){ _placeBackgroundView()}
   public func updateLocation(yPos: CGFloat, sectionProgress: CGFloat){ _updateLocation(yPos: yPos,
@@ -84,7 +84,7 @@ extension EAIndicatorBackground {
 
 extension EAIndicatorBackground {
   
-  /** PRIVATE ***************************/
+  /** PRIVATE **/
   
   fileprivate func _updateHeight() { _height = _scrollView.frame.height }
   
@@ -118,7 +118,7 @@ extension EAIndicatorBackground {
 
 extension EAIndicatorBackground
 {
-  /*** GESTURES/TOUCHES ***************************/
+  /*** GESTURES/TOUCHES ***/
   @objc func draggedView(_ sender:UIPanGestureRecognizer)
   {
     
@@ -141,5 +141,6 @@ extension EAIndicatorBackground
     _scrollView.setContentOffset(CGPoint(x: _scrollView.contentOffset.x, y: yPosition), animated: true)
   }
 }
+
 
 

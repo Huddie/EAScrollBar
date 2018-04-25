@@ -16,27 +16,32 @@ public protocol EAScrollDelegate {
 
 public class EAScrollIndicator : NSObject
 {
-  /**** Private *********************************************/
-  fileprivate var indicatorBackground                = EAIndicatorBackground()  // Hosting EAIndicatorBackground
-  fileprivate var titleView                          = EAScrollTitleView()
-  fileprivate var previousScrollViewYOffset: CGFloat = 0.0
-  fileprivate var delegate                           : EAScrollDelegate?
-  fileprivate weak var titleTimer                    : Timer?
-  fileprivate var showedThisSection                  : Bool?
-
-  /**** Public private(set) *********************************/
-  public fileprivate(set) weak var scrollView : UIScrollView?
-  public fileprivate(set) var points          : [EAIndicatorPoint]?
   
+  /*** Public ***/
+  public var indicatorBackground = EAIndicatorBackground()  // Hosting EAIndicatorBackground
+  public var titleView = EAScrollTitleView()
+  public var points : [EAIndicatorPoint]?
+  
+  /**** Private ****/
+  
+  fileprivate var previousScrollViewYOffset: CGFloat = 0.0
+  fileprivate var delegate : EAScrollDelegate?
+  fileprivate weak var titleTimer : Timer?
+  fileprivate var showedThisSection : Bool?
+  
+  /**** Public private(set) ****/
+  public fileprivate(set) weak var scrollView : UIScrollView?
+
+  /*** INIT ***/
   public override init() { super.init() }
   
   public init(scrollView: UIScrollView, points: [EAIndicatorPoint]?)
   {
     super.init()
     
-    self.showedThisSection                        = false
-    self.scrollView                               = scrollView
-    self.points                                   = points
+    self.showedThisSection  = false
+    self.scrollView = scrollView
+    self.points = points
     
     self.points?.sort {$0.location < $1.location}
     
@@ -47,10 +52,12 @@ public class EAScrollIndicator : NSObject
     
   }
   
-  public func flush()
-  {
+  deinit {
     NotificationCenter.default.removeObserver(self)
-    if let activeScrollView = self.scrollView { activeScrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset)) }
+    if let activeScrollView = self.scrollView {
+      activeScrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset))
+      activeScrollView.removeObserver(self, forKeyPath: #keyPath(UIScrollView.contentSize))
+    }
   }
   
   
@@ -61,7 +68,6 @@ public class EAScrollIndicator : NSObject
   {
     if keyPath == #keyPath(UIScrollView.contentOffset)
     {
-      
       
       if let yPos = (object as? UIScrollView)?.contentOffset.y
       {
@@ -85,7 +91,7 @@ public class EAScrollIndicator : NSObject
               - (self.scrollView?.bounds.height)!
               + (self.scrollView?.contentInset.bottom)!} else
             { rightPos = pointSet[index].location }
-          
+            
             let difference         = rightPos - leftPos                                      // Full Difference
             let differenceFromPred = yPos - leftPos                                          // Difference from pred
             percent                = CGFloat(differenceFromPred * 100 / difference)          // Percent
@@ -94,7 +100,7 @@ public class EAScrollIndicator : NSObject
             
             if percent < 20
             {
-
+              
               if titleTimer == nil && !showedThisSection!
               {
                 showedThisSection = true
@@ -118,7 +124,6 @@ public class EAScrollIndicator : NSObject
         
       }else if keyPath == #keyPath(UIScrollView.contentSize)
       {
-        print("CONTENT SIZE")
         indicatorBackground.placeBackgroundView()
       }
     }
@@ -137,7 +142,7 @@ extension EAScrollIndicator
 extension EAScrollIndicator
 {
   
-  /** PRIVATE ****************************/
+  /** PRIVATE **/
   
   fileprivate func setUpBackground(){
     
@@ -151,7 +156,7 @@ extension EAScrollIndicator
     titleView.hide()
     indicatorBackground.placeBackgroundView()
     NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-
+    
   }
   
   fileprivate func scrollViewObserver()
@@ -159,7 +164,7 @@ extension EAScrollIndicator
     // Set up observer
     self.scrollView?.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: [.old, .new], context: nil)
     self.scrollView?.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentSize  ), options: [.old, .new], context: nil)
-
+    
   }
   @objc fileprivate func rotated()
   {
@@ -172,7 +177,6 @@ extension EAScrollIndicator
       indicatorBackground.updateHeight()
     }
   }
-  
 }
 
 /****** OBJECT EXTENSIONS *********/
@@ -187,21 +191,17 @@ extension UIView {
 }
 
 extension UIColor {
-  func darker(by percentage:CGFloat=30.0) -> UIColor? {
-    return self.adjust(by: -1 * abs(percentage) )
-  }
+  
+  func darker(by percentage:CGFloat=30.0) -> UIColor? { return self.adjust(by: -1 * abs(percentage) ) }
+  
   func adjust(by percentage:CGFloat=30.0) -> UIColor? {
-    var r:CGFloat=0, g:CGFloat=0, b:CGFloat=0, a:CGFloat=0;
+    var r:CGFloat = 0, g:CGFloat = 0, b:CGFloat = 0, a:CGFloat = 0;
     if(self.getRed(&r, green: &g, blue: &b, alpha: &a)){
       return UIColor(red: min(r + percentage/100, 1.0),
                      green: min(g + percentage/100, 1.0),
                      blue: min(b + percentage/100, 1.0),
                      alpha: a)
-    }else{
-      return nil
-    }
+      
+    } else { return nil }
   }
 }
-
-
-
