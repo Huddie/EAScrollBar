@@ -26,11 +26,21 @@ class NumbersViewController: UIViewController,
   
   override func viewDidAppear(_ animated: Bool) {
 
+    
+    print(self.tableView.rectForRow(at: IndexPath(row: 43, section: 0)))
+    
+//    scrollIndicator = EAScrollIndicator(scrollView: self.tableView,
+//                                        points: [EAIndicatorPoint(title: "One", location: 400),
+//                                                 EAIndicatorPoint(title: "Two", location: 600),
+//                                                 EAIndicatorPoint(title: "Three", location: 900),
+//                                                 EAIndicatorPoint(title: "Four", location: 1909)])
+    
+    
     scrollIndicator = EAScrollIndicator(scrollView: self.tableView,
-                                        points: [EAIndicatorPoint(title: "One", location: 400),
-                                                 EAIndicatorPoint(title: "Two", location: 600),
-                                                 EAIndicatorPoint(title: "Three", location: 900),
-                                                 EAIndicatorPoint(title: "Four", location: 1000)])    
+                                        paths: [EAIndicatorPath(title: "ONE", indexPath: IndexPath(row: 20, section: 0)),
+                                                EAIndicatorPath(title: "TWO", indexPath: IndexPath(row: 40, section: 0)),
+                                                EAIndicatorPath(title: "THREE", indexPath: IndexPath(row: 60, section: 0)),
+                                                EAIndicatorPath(title: "FOUR", indexPath: IndexPath(row: 80, section: 0))])
   }
   
   override func didReceiveMemoryWarning() {

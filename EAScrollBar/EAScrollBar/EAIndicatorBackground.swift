@@ -11,12 +11,14 @@ import UIKit
 public class EAIndicatorBackground: UIView
 {
   
-  fileprivate var _width           : CGFloat   = 0.0                // Background width, will determine the indicator width
-  fileprivate var _height          : CGFloat   = 0.0                // Background height
-  fileprivate var _scrollView      : UIScrollView                   // scrollview (superview)
-  fileprivate var _indicator       : EAIndicator                    // Indicator  (subview)
-  fileprivate var _panGesture      = UIPanGestureRecognizer()       // Allow for scrolling
+  // MARK: fileprivate variables
+  fileprivate var _width : CGFloat = 0.0 // Background width, will determine the indicator width
+  fileprivate var _height : CGFloat = 0.0 // Background height
+  fileprivate var _scrollView : UIScrollView // scrollview (superview)
+  fileprivate var _indicator : EAIndicator  // Indicator  (subview)
+  fileprivate var _panGesture = UIPanGestureRecognizer() // Allow for scrolling
   
+  // MARK: Get/Sets
   var width: CGFloat
   {
     get{ return _width }
@@ -43,12 +45,14 @@ public class EAIndicatorBackground: UIView
       + _scrollView.contentInset.bottom }
   }
   
+  // MARK: Initializers
   override init(frame: CGRect)
   {
     _scrollView = UIScrollView()
     _indicator = EAIndicator()
     super.init(frame: frame)
   }
+  
   required public init?(coder aDecoder: NSCoder)
   {
     _scrollView = UIScrollView()
@@ -62,29 +66,19 @@ public class EAIndicatorBackground: UIView
     
     self.init()
     
-    /* Initial Set up */
+    // Initial Set up
     
-    _width                            = width
-    _scrollView                       = scrollView
-    _indicator                        = indicator
-    _height                           = scrollView.frame.height
-    _panGesture.cancelsTouchesInView  = true
-    self.backgroundColor              = UIColor.groupTableViewBackground.withAlphaComponent(0.2)
+    _width = width
+    _scrollView = scrollView
+    _indicator = indicator
+    _height = scrollView.frame.height
+    _panGesture.cancelsTouchesInView = true
+    self.backgroundColor = UIColor.groupTableViewBackground.withAlphaComponent(0.2)
   }
 }
 
+// MARK: fileprivate methods
 extension EAIndicatorBackground {
-  
-  /** PUBLIC **/
-  public func updateHeight(){ _updateHeight()}
-  public func placeBackgroundView(){ _placeBackgroundView()}
-  public func updateLocation(yPos: CGFloat, sectionProgress: CGFloat){ _updateLocation(yPos: yPos,
-                                                                                       sectionProgress: sectionProgress) }
-}
-
-extension EAIndicatorBackground {
-  
-  /** PRIVATE **/
   
   fileprivate func _updateHeight() { _height = _scrollView.frame.height }
   
@@ -97,13 +91,13 @@ extension EAIndicatorBackground {
     
     if let superView = self.superview  {  // Check for safe unwrap
       
-      self.translatesAutoresizingMaskIntoConstraints                                   = false
-      self.topAnchor.constraint(equalTo:            superView.topAnchor).isActive      = true
-      self.rightAnchor.constraint(equalTo:          superView.rightAnchor).isActive    = true
-      self.bottomAnchor.constraint(equalTo:         superView.bottomAnchor).isActive   = true
-      self.widthAnchor.constraint(equalToConstant:  _width).isActive                   = true
+      self.translatesAutoresizingMaskIntoConstraints = false
+      self.topAnchor.constraint(equalTo: superView.topAnchor).isActive = true
+      self.rightAnchor.constraint(equalTo: superView.rightAnchor).isActive = true
+      self.bottomAnchor.constraint(equalTo: superView.bottomAnchor).isActive = true
+      self.widthAnchor.constraint(equalToConstant: _width).isActive = true
       
-      /* Indicator Set Up */
+      // Indicator set up
       self.addSubview(_indicator)
       _panGesture = UIPanGestureRecognizer(target: self,
                                            action: #selector(self.draggedView(_:)))
@@ -116,14 +110,23 @@ extension EAIndicatorBackground {
   }
 }
 
+// MARK: public methods
+extension EAIndicatorBackground {
+  
+  public func updateHeight(){ _updateHeight()}
+  public func placeBackgroundView(){ _placeBackgroundView()}
+  public func updateLocation(yPos: CGFloat, sectionProgress: CGFloat){ _updateLocation(yPos: yPos,
+                                                                                       sectionProgress: sectionProgress) }
+}
+
+// MARK: Gestures
 extension EAIndicatorBackground
 {
-  /*** GESTURES/TOUCHES ***/
   @objc func draggedView(_ sender:UIPanGestureRecognizer)
   {
     
-    let location      = sender.translation(in: self)
-    let yPosition     = location.y * scrollViewContentHeight / _height
+    let location = sender.translation(in: self)
+    let yPosition = location.y * scrollViewContentHeight / _height
     
     _scrollView.setContentOffset(CGPoint(x: _scrollView.contentOffset.x,
                                          y: _scrollView.contentOffset.y + yPosition),
@@ -141,6 +144,4 @@ extension EAIndicatorBackground
     _scrollView.setContentOffset(CGPoint(x: _scrollView.contentOffset.x, y: yPosition), animated: true)
   }
 }
-
-
 

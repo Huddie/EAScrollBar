@@ -8,50 +8,102 @@
 
 import UIKit
 
-/********** Delegate ****************/
+// MARK: EAScrollDelegate
 public protocol EAScrollDelegate {
   func sectionPercent(percent: CGFloat)
 }
-/********** End delegate ****************/
 
 public class EAScrollIndicator : NSObject
 {
   
-  /*** Public ***/
+  // MARK: public variables
   public var indicatorBackground = EAIndicatorBackground()  // Hosting EAIndicatorBackground
   public var titleView = EAScrollTitleView()
   public var points : [EAIndicatorPoint]?
   
-  /**** Private ****/
   
-  fileprivate var previousScrollViewYOffset: CGFloat = 0.0
-  fileprivate var delegate : EAScrollDelegate?
-  fileprivate weak var titleTimer : Timer?
-  fileprivate var showedThisSection : Bool?
+  // MARK: fileprivate constants
+  fileprivate let _indicator : EAIndicator = EAIndicator(color: UIColor.purple)
   
-  /**** Public private(set) ****/
+  // MARK: fileprivate variables
+  fileprivate var _previousScrollMoment: Date = Date()
+  fileprivate var _previousScrollY: CGFloat = 0
+  fileprivate var _indicatorColor : UIColor = UIColor.purple
+  fileprivate var _shadeColor : UIColor = UIColor.purple
+  fileprivate var _scrollDelegate : EAScrollDelegate?
+  
+  // MARK: public fileprivate(set) variables
   public fileprivate(set) weak var scrollView : UIScrollView?
 
-  /*** INIT ***/
+  
+  // MARK: Get/Set
+  var indicatorColor: UIColor
+  {
+    get{ return (_indicator.indicatorColor) }
+    set{ _indicator.indicatorColor = newValue }
+  }
+  
+  var shadeColor: UIColor
+  {
+    get{ return _indicatorColor }
+    set
+    {
+      _indicatorColor = newValue
+      _indicator.indicatorColor = newValue
+    }
+  }
+
+  
+  // MARK: Initializers
   public override init() { super.init() }
   
-  public init(scrollView: UIScrollView, points: [EAIndicatorPoint]?)
+  public init(scrollView: UIScrollView,
+              indicatorColor: UIColor? = UIColor.purple,
+              shadeColor: UIColor? = UIColor.purple,
+              points: [EAIndicatorPoint]?) // Location given as CGFloat
+  {
+    super.init()
+  
+    _indicator.shadeColor = shadeColor ?? _indicator.shadeColor
+    _indicator.indicatorColor = indicatorColor ?? _indicator.indicatorColor
+    
+    self.scrollView = scrollView
+    self.points = points
+    commonInit()
+
+  }
+  
+  public init(scrollView: UIScrollView,
+              indicatorColor: UIColor? = UIColor.purple,
+              shadeColor: UIColor? = UIColor.purple,
+              paths: [EAIndicatorPath]?) // Location given as IndexPath requires conversion
   {
     super.init()
     
-    self.showedThisSection  = false
+    _indicator.shadeColor = shadeColor ?? _indicator.shadeColor
+    _indicator.indicatorColor = indicatorColor ?? _indicator.indicatorColor
+    
     self.scrollView = scrollView
-    self.points = points
+    self.points = paths?.map { EAIndicatorPoint(title: $0.title,
+                                                location: self.indexPathToOffset($0.indexPath)) }
+    
+    commonInit()
+  }
+  
+  fileprivate func commonInit()
+  {
+
+    self.scrollView?.delegate = self
     
     self.points?.sort {$0.location < $1.location}
-    
+
     self.scrollView?.showsVerticalScrollIndicator = false
     
     self.setUpBackground()
-    self.scrollViewObserver()
-    
+    self.setScrollViewObserver()
   }
   
+  // MARK: Deinit
   deinit {
     NotificationCenter.default.removeObserver(self)
     if let activeScrollView = self.scrollView {
@@ -68,140 +120,134 @@ public class EAScrollIndicator : NSObject
   {
     if keyPath == #keyPath(UIScrollView.contentOffset)
     {
-      
       if let yPos = (object as? UIScrollView)?.contentOffset.y
       {
-        
-        var percent     : CGFloat = 0.0
-        previousScrollViewYOffset = yPos
-        if let index = self.points?.index(where: { $0.location > yPos })
-        {
-          if let pointSet = self.points
-          {
-            
-            var rightPos :CGFloat  = 0.0
-            var leftPos  :CGFloat  = 0.0
-            
-            if (index - 1 < 0)
-            { leftPos = 0.0 } else
-            { leftPos = pointSet[index - 1].location }
-            
-            if (index > (self.points?.count)!)
-            { rightPos =  (self.scrollView?.contentSize.height)!
-              - (self.scrollView?.bounds.height)!
-              + (self.scrollView?.contentInset.bottom)!} else
-            { rightPos = pointSet[index].location }
-            
-            let difference         = rightPos - leftPos                                      // Full Difference
-            let differenceFromPred = yPos - leftPos                                          // Difference from pred
-            percent                = CGFloat(differenceFromPred * 100 / difference)          // Percent
-            
-            delegate?.sectionPercent(percent: percent)
-            
-            if percent < 20
-            {
-              
-              if titleTimer == nil && !showedThisSection!
-              {
-                showedThisSection = true
-                titleView.setTitle(title: self.points![index].title)
-                titleTimer = Timer.scheduledTimer(timeInterval: 1,
-                                                  target: self,
-                                                  selector: #selector(timerFired),
-                                                  userInfo: nil,
-                                                  repeats: false)
-              }
-            }
-            else
-            {
-              showedThisSection = false
-              titleTimer?.invalidate()
-              titleView.hide()
-            }
-          }
-        }
-        indicatorBackground.updateLocation(yPos: yPos, sectionProgress:  percent)
-        
-      }else if keyPath == #keyPath(UIScrollView.contentSize)
-      {
-        indicatorBackground.placeBackgroundView()
-      }
+        updateIndicator(yPos: yPos)
+      }else if keyPath == #keyPath(UIScrollView.contentSize) { indicatorBackground.placeBackgroundView() }
     }
   }
 }
 
-extension EAScrollIndicator
+// MARK: UIScrollViewDelegate
+extension EAScrollIndicator: UIScrollViewDelegate
 {
-  // TIMER
-  @objc private func timerFired()
+  public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView)
   {
-    titleTimer?.invalidate()
     titleView.hide()
   }
 }
+// MARK: fileprivate methods
 extension EAScrollIndicator
 {
   
-  /** PRIVATE **/
+  fileprivate func updateIndicator(yPos: CGFloat)
+  {
+    var percent : CGFloat = 0.0
+    
+    if let index = self.points?.index(where: { $0.location > yPos })
+    {
+      
+      if let pointSet = self.points
+      {
+        
+        var rightPos :CGFloat  = 0.0
+        var leftPos  :CGFloat  = 0.0
+        
+        if (index - 1 < 0)
+        { leftPos = 0.0 } else
+        { leftPos = pointSet[index - 1].location }
+        
+        if (index > (self.points?.count)!)
+        { rightPos =  (self.scrollView?.contentSize.height)!
+          - (self.scrollView?.bounds.height)!
+          + (self.scrollView?.contentInset.bottom)!} else
+        { rightPos = pointSet[index].location }
+        
+        let difference = rightPos - leftPos // Full Difference
+        let differenceFromPred = yPos - leftPos // Difference from pred
+        percent = CGFloat(differenceFromPred * 100 / difference)   // Percent
+        
+        _scrollDelegate?.sectionPercent(percent: percent)
+        
+        let date = Date()
+        let elapsed = Date().timeIntervalSince(_previousScrollMoment)
+        let distance = (yPos - _previousScrollY)
+        let velocity = (elapsed == 0) ? 0 : fabs(distance / CGFloat(elapsed))
+        _previousScrollMoment = date
+        _previousScrollY = yPos
+        
+        if velocity > 1000
+        {
+          titleView.setTitle(title: self.points![index].title)
+        }
+        else if velocity < 50 && velocity != 0
+        {
+          titleView.hide()
+        }
+      }
+    }
+    indicatorBackground.updateLocation(yPos: yPos, sectionProgress:  percent)
+  }
   
+  /// Set Up Backgorund Function
+  /// Create the indicator background and add to the indicator object
+  /// Called one time only.
   fileprivate func setUpBackground(){
     
     // Set up EAIndicatorBackground
-    indicatorBackground = EAIndicatorBackground(width: 30, scrollView: self.scrollView!,
-                                                indicator: EAIndicator(color: .purple, corner: 2))
+    indicatorBackground = EAIndicatorBackground(width: 30,
+                                                scrollView: self.scrollView!,
+                                                indicator: _indicator)
     
     self.scrollView?.superview?.addSubview(indicatorBackground)
     self.scrollView?.superview?.addSubview(titleView)
-    titleView.setUp()
-    titleView.hide()
     indicatorBackground.placeBackgroundView()
     NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     
+    // Set up title
+    titleView.setUp()
+    titleView.hide()
   }
   
-  fileprivate func scrollViewObserver()
+  /// SetScrollViewObservers
+  /// Adds ContentOffset and ContentSize observers to scrollview
+  /// ContentOffset - Used for updating the indicator (Percent, position and titleview)
+  /// ContentSize   - Used for updating the indicator background in case of a size change
+  fileprivate func setScrollViewObserver()
   {
     // Set up observer
     self.scrollView?.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentOffset), options: [.old, .new], context: nil)
     self.scrollView?.addObserver(self, forKeyPath: #keyPath(UIScrollView.contentSize  ), options: [.old, .new], context: nil)
-    
   }
+  
+  /// Index Path To Offset Function
+  /// Converts IndexPath -> CGFloat
+  fileprivate func indexPathToOffset(_ indexPath: IndexPath) -> CGFloat
+  {
+
+    if let tableview = self.scrollView as? UITableView
+    {
+      return tableview.rectForRow(at: indexPath).origin.y
+    }
+    else if let collectionView = self.scrollView as? UICollectionView
+    {
+      if let rect = collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath)?.frame
+      {
+        return rect.origin.y
+      }
+      assert(true, "Couldn't find frame for CollectionView IndexPath")
+      return 0;
+    }
+    
+    assert(true, "Scrollview is not a TableView or a CollectionView")
+    return 0;
+  }
+  
+  /// Rotated
   @objc fileprivate func rotated()
   {
-    if UIDevice.current.orientation.isLandscape
-    {
-      indicatorBackground.updateHeight()
-    }
-    else
-    {
-      indicatorBackground.updateHeight()
-    }
+    if UIDevice.current.orientation.isLandscape { indicatorBackground.updateHeight() }
+    else { indicatorBackground.updateHeight() }
   }
 }
 
-/****** OBJECT EXTENSIONS *********/
-extension UIView {
-  func round(corners: UIRectCorner, radius: CGFloat)
-  {
-    let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-    let mask = CAShapeLayer()
-    mask.path = path.cgPath
-    self.layer.mask = mask
-  }
-}
-
-extension UIColor {
-  
-  func darker(by percentage:CGFloat=30.0) -> UIColor? { return self.adjust(by: -1 * abs(percentage) ) }
-  
-  func adjust(by percentage:CGFloat=30.0) -> UIColor? {
-    var r:CGFloat = 0, g:CGFloat = 0, b:CGFloat = 0, a:CGFloat = 0;
-    if(self.getRed(&r, green: &g, blue: &b, alpha: &a)){
-      return UIColor(red: min(r + percentage/100, 1.0),
-                     green: min(g + percentage/100, 1.0),
-                     blue: min(b + percentage/100, 1.0),
-                     alpha: a)
-      
-    } else { return nil }
-  }
-}
