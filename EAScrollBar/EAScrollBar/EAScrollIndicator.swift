@@ -34,7 +34,7 @@ public class EAScrollIndicator : NSObject
   
   // MARK: public fileprivate(set) variables
   public fileprivate(set) weak var scrollView : UIScrollView?
-
+  
   
   // MARK: Get/Set
   var indicatorColor: UIColor
@@ -52,7 +52,6 @@ public class EAScrollIndicator : NSObject
       _indicator.indicatorColor = newValue
     }
   }
-
   
   // MARK: Initializers
   public override init() { super.init() }
@@ -63,14 +62,14 @@ public class EAScrollIndicator : NSObject
               points: [EAIndicatorPoint]?) // Location given as CGFloat
   {
     super.init()
-  
+    
     _indicator.shadeColor = shadeColor ?? _indicator.shadeColor
     _indicator.indicatorColor = indicatorColor ?? _indicator.indicatorColor
     
     self.scrollView = scrollView
     self.points = points
     commonInit()
-
+    
   }
   
   public init(scrollView: UIScrollView,
@@ -92,11 +91,11 @@ public class EAScrollIndicator : NSObject
   
   fileprivate func commonInit()
   {
-
+    
     self.scrollView?.delegate = self
     
     self.points?.sort {$0.location < $1.location}
-
+    
     self.scrollView?.showsVerticalScrollIndicator = false
     
     self.setUpBackground()
@@ -135,6 +134,7 @@ extension EAScrollIndicator: UIScrollViewDelegate
   {
     titleView.hide()
   }
+  
 }
 // MARK: fileprivate methods
 extension EAScrollIndicator
@@ -165,7 +165,8 @@ extension EAScrollIndicator
         
         let difference = rightPos - leftPos // Full Difference
         let differenceFromPred = yPos - leftPos // Difference from pred
-        percent = CGFloat(differenceFromPred * 100 / difference)   // Percent
+        
+        percent = CGFloat(differenceFromPred * 100 / (difference > 0 ? difference : 1))   // Percent
         
         _scrollDelegate?.sectionPercent(percent: percent)
         
@@ -186,6 +187,7 @@ extension EAScrollIndicator
         }
       }
     }
+    
     indicatorBackground.updateLocation(yPos: yPos, sectionProgress:  percent)
   }
   
@@ -224,7 +226,7 @@ extension EAScrollIndicator
   /// Converts IndexPath -> CGFloat
   fileprivate func indexPathToOffset(_ indexPath: IndexPath) -> CGFloat
   {
-
+    
     if let tableview = self.scrollView as? UITableView
     {
       return tableview.rectForRow(at: indexPath).origin.y
@@ -250,4 +252,5 @@ extension EAScrollIndicator
     else { indicatorBackground.updateHeight() }
   }
 }
+
 

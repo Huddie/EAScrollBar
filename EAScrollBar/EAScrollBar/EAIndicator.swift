@@ -24,8 +24,8 @@ public class EAIndicator: UIView
   fileprivate var _backgroundView : EAIndicatorBackground? // The EAIndicatorBackground which will host the indicator
   fileprivate var _heightConstraint : NSLayoutConstraint?  // Height Constraints of indicator which will allow for resizing
   fileprivate var _topConstraint : NSLayoutConstraint?  // Top Constraints of indicator which will allow for proper alighment when resized
-  fileprivate var _shadeTopConstraint : NSLayoutConstraint?  // Top Constraints of indicator which will allow for proper alighment when resized
-
+  fileprivate var _shadeHeightConstraint : NSLayoutConstraint?  // Top Constraints of indicator which will allow for proper alighment when resized
+  
   
   // View that covers the background view indicating how far down the section you are
   let shade: UIView = {
@@ -76,7 +76,7 @@ public class EAIndicator: UIView
   override init(frame: CGRect) { super.init(frame: frame) }
   required public init?(coder aDecoder: NSCoder) { super.init(coder: aDecoder) }
   
-  convenience init(color: UIColor? = UIColor.gray) 
+  convenience init(color: UIColor? = UIColor.gray)
   {
     self.init()
     
@@ -85,7 +85,7 @@ public class EAIndicator: UIView
     self.scroller.backgroundColor = color ?? UIColor.blue
     self.shade.backgroundColor = color?.darker() ?? UIColor.blue.darker()
     self.translatesAutoresizingMaskIntoConstraints = false
-  
+    
   }
 }
 
@@ -111,7 +111,7 @@ extension EAIndicator
       self.addSubview(scroller)
       
       scroller.round(corners: [.topLeft, .bottomLeft], radius: 4)
-
+      
       
       /* Constraints */
       
@@ -129,23 +129,22 @@ extension EAIndicator
       shade.bottomAnchor.constraint(equalTo: scroller.bottomAnchor).isActive = true
       
       
-      _shadeTopConstraint = shade.topAnchor.constraint(equalTo: scroller.topAnchor,
-                                                       constant: _indicatorHeight)
-
+      _shadeHeightConstraint = shade.heightAnchor.constraint(equalToConstant: _indicatorHeight)
       
-      _shadeTopConstraint?.isActive = true
-
+      
+      _shadeHeightConstraint?.isActive = true
+      
       /* End constraints */
     }
     
     updateLocation(yPos: 0, sectionProgress: 0) // Set scrollview and progress to zero
     
   }
-
+  
   /// This function will update the location of the indicator within the host view
   fileprivate func _updateLocation(yPos: CGFloat, sectionProgress: CGFloat)
   {
-
+    
     // Update indicator
     var newHeight: CGFloat = _indicatorHeight
     
@@ -157,36 +156,36 @@ extension EAIndicator
     {
       
       newHeight = _indicatorHeight + abs(convertedY) - _topBottomPadding > _minimumHeight ?
-                  _indicatorHeight + abs(convertedY) - _topBottomPadding : _minimumHeight
+        _indicatorHeight + abs(convertedY) - _topBottomPadding : _minimumHeight
       
       _heightConstraint?.constant = newHeight
       _topConstraint?.constant = _topBottomPadding
     }
     else if convertedY >= (_backgroundView?.height)! - _topBottomPadding - _indicatorHeight // If passed bottom padding, begin compression
     {
-
+      
       let difference = convertedY - ((_backgroundView?.height)!
-                                  - _topBottomPadding
-                                  - _indicatorHeight) // Some pos. number
+        - _topBottomPadding
+        - _indicatorHeight) // Some pos. number
       
       newHeight = _indicatorHeight - abs(difference) > _minimumHeight ?
-                  _indicatorHeight - abs(difference) : _minimumHeight
-
+        _indicatorHeight - abs(difference) : _minimumHeight
+      
       _heightConstraint?.constant = newHeight
       _topConstraint?.constant = (_backgroundView?.frame.height)! - _topBottomPadding
-                                                                  - (_heightConstraint?.constant)! // Reposition top
+        - (_heightConstraint?.constant)! // Reposition top
       
     }
     else  // Normal update, resize indicator height to identity
     {
       _heightConstraint?.constant = _indicatorHeight
       _topConstraint?.constant = yPos * (_backgroundView?.height)!
-                                      / (_backgroundView?.scrollViewContentHeight)!
+        / (_backgroundView?.scrollViewContentHeight)!
     }
     
     // Update shade
     let convertedPercent  = sectionProgress / 100.0  * _indicatorHeight
-    _shadeTopConstraint?.constant = _indicatorHeight - convertedPercent
+    _shadeHeightConstraint?.constant = convertedPercent
     
     self.updateConstraints()
     scroller.frame = CGRect(x: 0, y: 0, width: (_backgroundView?.width)!, height: newHeight)
@@ -200,4 +199,5 @@ extension EAIndicator
   public func placeIndicator() { _placeIndicator() }
   public func updateLocation(yPos: CGFloat, sectionProgress: CGFloat) { _updateLocation(yPos: yPos, sectionProgress: sectionProgress) }
 }
+
 

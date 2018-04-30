@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
 s.name             = 'EAScrollBar'
-s.version          = '0.1.8'
+s.version          = '0.1.9'
 s.summary          = 'A simple scrollbar'
 
 s.description      = <<-DESC

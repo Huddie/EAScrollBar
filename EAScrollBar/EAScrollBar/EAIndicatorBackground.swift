@@ -17,7 +17,8 @@ public class EAIndicatorBackground: UIView
   fileprivate var _scrollView : UIScrollView // scrollview (superview)
   fileprivate var _indicator : EAIndicator  // Indicator  (subview)
   fileprivate var _panGesture = UIPanGestureRecognizer() // Allow for scrolling
-  
+  fileprivate var _hideTimer : Timer?
+
   // MARK: Get/Sets
   var width: CGFloat
   {
@@ -74,6 +75,8 @@ public class EAIndicatorBackground: UIView
     _height = scrollView.frame.height
     _panGesture.cancelsTouchesInView = true
     self.backgroundColor = UIColor.groupTableViewBackground.withAlphaComponent(0.2)
+    _hideTimer = Timer(timeInterval: 5.0, target: self.dimIndicator(), selector: #selector(dimIndicator), userInfo: nil, repeats: false)
+
   }
 }
 
@@ -125,6 +128,23 @@ extension EAIndicatorBackground
   @objc func draggedView(_ sender:UIPanGestureRecognizer)
   {
     
+    
+    if(sender.state == .began)
+    {
+      _hideTimer?.invalidate()
+      UIView.animate(withDuration: 0.3, animations: {
+        self._indicator.alpha = 1
+      })
+    }
+    else if(sender.state == .cancelled || sender.state == .ended || sender.state == .failed)
+    {
+      if(!(_hideTimer?.isValid)!)
+      {
+        _hideTimer?.invalidate()
+        _hideTimer = Timer(timeInterval: 3.0, target: self.dimIndicator(), selector: #selector(dimIndicator), userInfo: nil, repeats: false)
+      }
+    }
+  
     let location = sender.translation(in: self)
     let yPosition = location.y * scrollViewContentHeight / _height
     
@@ -136,12 +156,20 @@ extension EAIndicatorBackground
     
   }
   
+  @objc private func dimIndicator()
+  {
+    UIView.animate(withDuration: 0.5, animations: {
+      self._indicator.alpha = 0.4
+    })
+  }
+
   override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
   {
     let touch = touches.first!
     let location = touch.location(in: self)
     let yPosition = location.y * scrollViewContentHeight / _height
     _scrollView.setContentOffset(CGPoint(x: _scrollView.contentOffset.x, y: yPosition), animated: true)
+    
   }
 }
 
