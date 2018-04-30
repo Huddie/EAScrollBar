@@ -92,8 +92,6 @@ public class EAScrollIndicator : NSObject
   fileprivate func commonInit()
   {
     
-    self.scrollView?.delegate = self
-    
     self.points?.sort {$0.location < $1.location}
     
     self.scrollView?.showsVerticalScrollIndicator = false
@@ -127,15 +125,6 @@ public class EAScrollIndicator : NSObject
   }
 }
 
-// MARK: UIScrollViewDelegate
-extension EAScrollIndicator: UIScrollViewDelegate
-{
-  public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView)
-  {
-    titleView.hide()
-  }
-  
-}
 // MARK: fileprivate methods
 extension EAScrollIndicator
 {

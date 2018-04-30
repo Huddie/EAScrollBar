@@ -60,6 +60,10 @@ class NumbersViewController: UIViewController,
     cell.textLabel?.text = "\(indexPath.row)"
     return cell
   }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    print(indexPath.row)
+  }
 
   func sectionPercent(percent: CGFloat) {
     /* Percent the section is complete */
